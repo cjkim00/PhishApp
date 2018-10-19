@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">PhishApp</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="welcome">Welcome!</string>
+    <string name="loginAndRegister">Please login or register</string>
+    <string name="Username">Username</string>
+    <string name="Password">Password</string>
+    <string name="Register">REGISTER</string>
+    <string name="Login">LOGIN</string>
+    <string name="registerAccount">Please register for an account</string>
+    <string name="successfulLogin">Login Successful!</string>
+    <string name="title_activity_home">HomeActivity</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+</resources>
