@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources tools:ignore="ExtraTranslation" xmlns:tools="http://schemas.android.com/tools">
+    <string name="ep_base_url">tcss450a18.herokuapp.com</string>
+    <string name="register_end_point">tcss450a18.herokuapp.com/register</string>
+    <string name="set_lists_end_point">tcss450a18.herokuapp.com/phish/setlists/recent</string>
+    <string name="ep_login">login</string>
+    <string name="ep_register">register</string>
+    <string name="ep_phish">phish</string>
+    <string name="ep_blog">blog</string>
+    <string name="ep_get">get</string>
+    <string name="set_lists">setlists</string>
+    <string name="ep_recent">recent</string>
+</resources>

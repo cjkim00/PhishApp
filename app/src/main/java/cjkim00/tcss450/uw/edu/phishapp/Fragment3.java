@@ -27,12 +27,13 @@ public class Fragment3 extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_fragment3, container, false);
+
         final TextView Username = (TextView) view.findViewById(R.id.Inputted_Username);
-        String user = getArguments().get("Username").toString();
+        String user = getArguments().getString("Username");
         Username.setText(user);
 
         final TextView Password = (TextView) view.findViewById(R.id.Inputted_Password);
-        String pass = getArguments().get("Password").toString();
+        String pass = getArguments().getString("Password");
         Password.setText(pass);
 
         return view;

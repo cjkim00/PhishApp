@@ -19,10 +19,10 @@ import java.util.List;
  */
 public class MyBlogRecyclerViewAdapter extends RecyclerView.Adapter<MyBlogRecyclerViewAdapter.ViewHolder> {
 
-    private final BlogPost[] mValues;
+    private final List<BlogPost> mValues;
     private final OnListFragmentInteractionListener mListener;
 
-    public MyBlogRecyclerViewAdapter(BlogPost[] blogs, OnListFragmentInteractionListener listener) {
+    public MyBlogRecyclerViewAdapter(List<BlogPost> blogs, OnListFragmentInteractionListener listener) {
         mValues = blogs;
         mListener = listener;
     }
@@ -36,10 +36,10 @@ public class MyBlogRecyclerViewAdapter extends RecyclerView.Adapter<MyBlogRecycl
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.mItem = mValues[position];
-        holder.mBlogTitle.setText( mValues[position].getTitle());
-        holder.mPublishDate.setText(mValues[position].getPubDate());
-        holder.mBlogPreview.setText(Html.fromHtml(mValues[position].getTeaser().substring(0, 100)));
+        holder.mItem = mValues.get(position);
+        holder.mBlogTitle.setText( mValues.get(position).getTitle());
+        holder.mPublishDate.setText(mValues.get(position).getPubDate());
+        holder.mBlogPreview.setText(Html.fromHtml(mValues.get(position).getTeaser().substring(0, 100)));
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -55,7 +55,7 @@ public class MyBlogRecyclerViewAdapter extends RecyclerView.Adapter<MyBlogRecycl
 
     @Override
     public int getItemCount() {
-        return mValues.length;
+        return mValues.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

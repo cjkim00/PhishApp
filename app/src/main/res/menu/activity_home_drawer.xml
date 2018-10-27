@@ -7,10 +7,17 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/home_button"
-            android:title="Home" />
+            android:title="Home"
+            android:icon="@drawable/ic_meno_home"/>
         <item
             android:id="@+id/blog_posts"
-            android:title="Blog Posts" />
+            android:title="Blog Posts"
+            android:icon="@drawable/ic_blog_posts"/>
+
+        <item
+            android:id="@+id/Set_Lists"
+            android:title="Set Lists"
+            ></item>
 
     </group>
 
