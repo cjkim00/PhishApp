@@ -61,19 +61,6 @@ public class SuccessFragment extends Fragment {
             }
         });
 
-        b = view.findViewById(R.id.successLoginButton);
-        b.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(), HomeActivity.class);
-                Bundle args = new Bundle();
-                args.putString("Username", getArguments().getString("Username"));
-                args.putString("Password", getArguments().getString("Password"));
-                intent.putExtras(args);
-                startActivity(intent);
-
-            }
-        });
         return view;
     }
 

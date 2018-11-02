@@ -1,5 +1,6 @@
 package cjkim00.tcss450.uw.edu.phishapp;
 
+import android.content.Intent;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.Fragment;
 
@@ -39,12 +40,24 @@ public class MainActivity extends AppCompatActivity implements WaitFragment.OnFr
 
     @Override
     public void onLoginFragmentLoginInteraction(Credentials credentials) {
+        /*
         SuccessFragment successFragment = new SuccessFragment();
         Bundle args = new Bundle();
         args.putString("Username", credentials.getEmail());
         args.putString("Password", credentials.getPassword());
         successFragment.setArguments(args);
         loadFragment(successFragment);
+        */
+        //End this Activity and remove it from the Activity back stack.
+        Intent intent = new Intent(MainActivity.this, HomeActivity.class);
+        //Bundle args = new Bundle();
+        //args.putString("Username", credentials.getEmail());
+        //args.putString("Password", credentials.getPassword());
+        //intent.putExtras(args);
+        intent.putExtra("Username", credentials.getEmail());
+        intent.putExtra("Password", credentials.getPassword());
+        startActivity(intent);
+        finish();
     }
 
     private void loadFragment(Fragment frag) {

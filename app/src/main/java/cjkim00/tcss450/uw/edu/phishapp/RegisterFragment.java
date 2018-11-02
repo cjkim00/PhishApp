@@ -93,31 +93,18 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
             builder.addLastName(last);
             builder.addUsername(User);
             Credentials credentials = builder.build();
-            //Credentials credentials = new Credentials.Builder(
-            //        Username.getText().toString(),
-            //        Password1.getText().toString())
-            //        .build();
-            //credentials.addFirstName(firstName.getText().toString());
-            //build the web service URL
             Uri uri = new Uri.Builder()
                     .scheme("https")
                     .appendPath(getString(R.string.ep_base_url))
                     .appendPath(getString(R.string.ep_register))
                     .build();
-            //build the JSONObject
             JSONObject msg = credentials.asJSONObject();
             mCredentials = credentials;
-            //instantiate and execute the AsyncTask.
-            //Feel free to add a handler for onPreExecution so that a progress bar
-            //is displayed or maybe disable buttons.
             new SendPostAsyncTask.Builder(uri.toString(), msg)
                     .onPreExecute(this::handleLoginOnPre)
                     .onPostExecute(this::handleLoginOnPost)
                     .onCancelled(this::handleErrorsInTask)
                     .build().execute();
-
-            //FragmentManager manager = getActivity().getSupportFragmentManager();
-            //manager.popBackStack();
 
         }
     }
