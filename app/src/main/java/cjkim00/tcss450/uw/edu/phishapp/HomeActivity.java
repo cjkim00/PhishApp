@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -20,11 +21,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.google.firebase.iid.FirebaseInstanceId;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.w3c.dom.Text;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,7 +40,8 @@ public class HomeActivity extends AppCompatActivity
         BlogFragment.OnListFragmentInteractionListener,
         WaitFragment.OnFragmentInteractionListener,
         SetListsFragment.OnListFragmentInteractionListener,
-        OnClickSetListFragment.OnFragmentInteractionListener {
+        OnClickSetListFragment.OnFragmentInteractionListener,
+        ChatFragment.OnFragmentInteractionListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,14 +58,25 @@ public class HomeActivity extends AppCompatActivity
         final TextView Password = (TextView) findViewById(R.id.homePassword);
         String pass = intent.getStringExtra("Password");
         //Password.setText(pass);
+        /*
         Fragment3 f3 = new Fragment3();
         Bundle b = new Bundle();
         b.putString("Username", user);
         b.putString("Password", pass);
         f3.setArguments(b);
+        */
+        final Bundle args = new Bundle();
+        args.putString("email", user);
+        Fragment fragment;
+        if (getIntent().getBooleanExtra(getString(R.string.keys_intent_notifification_msg), false)) {
+            fragment = new ChatFragment();
+        } else {
+            fragment = new SuccessFragment();
+            fragment.setArguments(args);
+        }
         FragmentTransaction transaction = getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.fragmentContainer, f3);
+                .replace(R.id.fragmentContainer, fragment);
                 //.addToBackStack(null);
         // Commit the transaction
         transaction.commit();
@@ -171,6 +187,16 @@ public class HomeActivity extends AppCompatActivity
                     .onPostExecute(this::handleSetListsGetOnPostExecute)
                     .build().execute();
 
+        } else if (id == R.id.Global_Chat) {
+            ChatFragment chatFragment = new ChatFragment();
+            FragmentManager manager = this.getSupportFragmentManager();
+            manager.popBackStack();
+            FragmentTransaction transaction = getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragmentContainer, chatFragment);
+            //.addToBackStack(null);
+            // Commit the transaction
+            transaction.commit();
         }
 
         //DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -362,24 +388,54 @@ public class HomeActivity extends AppCompatActivity
     }
 
     private void logout() {
-        SharedPreferences prefs =
-                getSharedPreferences(
-                        getString(R.string.keys_shared_prefs),
-                        Context.MODE_PRIVATE);
-        //remove the saved credentials from StoredPrefs
-        prefs.edit().remove(getString(R.string.keys_prefs_password)).apply();
-        prefs.edit().remove(getString(R.string.keys_prefs_email)).apply();
-        //close the app
-        finishAndRemoveTask();
-        //or close this activity and bring back the Login
-        //Intent i = new Intent(this, MainActivity.class);
-        //startActivity(i);
-        //End this Activity and remove it from the Activity back stack.
-        //finish();
+        new DeleteTokenAsyncTask().execute();
     }
+
+    // Deleting the InstanceId (Firebase token) must be done asynchronously. Good thing
+// we have something that allows us to do that.
+    class DeleteTokenAsyncTask extends AsyncTask<Void, Void, Void> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            onWaitFragmentInteractionShow();
+        }
+        @Override
+        protected Void doInBackground(Void... voids) {
+            //since we are already doing stuff in the background, go ahead
+            //and remove the credentials from shared prefs here.
+            SharedPreferences prefs =
+                    getSharedPreferences(
+                            getString(R.string.keys_shared_prefs),
+                            Context.MODE_PRIVATE);
+            prefs.edit().remove(getString(R.string.keys_prefs_password)).apply();
+            prefs.edit().remove(getString(R.string.keys_prefs_email)).apply();
+            try {
+                //this call must be done asynchronously.
+                FirebaseInstanceId.getInstance().deleteInstanceId();
+            } catch (IOException e) {
+                Log.e("FCM", "Delete error!");
+                e.printStackTrace();
+            }
+            return null;
+        }
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            //close the app
+            finishAndRemoveTask();
+            //or close this activity and bring back the Login
+// Intent i = new Intent(this, MainActivity.class);
+// startActivity(i);
+// //Ends this Activity and removes it from the Activity back stack.
+// finish();
+        }
+    }
+
 
     @Override
     public void onFragmentInteraction(Uri uri) {
 
     }
 }
+
+

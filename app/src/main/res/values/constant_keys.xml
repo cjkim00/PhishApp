@@ -5,4 +5,5 @@
     <string name="keys_prefs_password">see_the_city_see_the_zoo</string>
     <string name="keys_fragment_login">loginFragmentTag</string>
     <string name="keys_fragment_register">registerFragmentTag</string>
+    <string name="keys_intent_notifification_msg">was app started from message notification?</string>
 </resources>

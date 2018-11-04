@@ -59,9 +59,29 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                 email,
                 password)
                 .build();
-
+        //build the web service URL
+        Uri uri = new Uri.Builder()
+                .scheme("https")
+                .appendPath(getString(R.string.ep_base_url))
+                .appendPath(getString(R.string.ep_login))
+                .appendPath(getString(R.string.ep_with_token))
+                .build();
+        //build the JSONObject
+        JSONObject msg = credentials.asJSONObject();
+        try {
+            msg.put("token", mFirebaseToken);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         mCredentials = credentials;
-        mListener.onLoginFragmentLoginInteraction(mCredentials);
+        //instantiate and execute the AsyncTask.
+        //Feel free to add a handler for onPreExecution so that a progress bar
+        //is displayed or maybe disable buttons.
+        new SendPostAsyncTask.Builder(uri.toString(), msg)
+                .onPreExecute(this::handleLoginOnPre)
+                .onPostExecute(this::handleLoginOnPost)
+                .onCancelled(this::handleErrorsInTask)
+                .build().execute();
     }
 
     @Override
@@ -119,9 +139,15 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                     .scheme("https")
                     .appendPath(getString(R.string.ep_base_url))
                     .appendPath(getString(R.string.ep_login))
+                    //.appendPath(getString(R.string.ep_with_token))
                     .build();
             //build the JSONObject
             JSONObject msg = credentials.asJSONObject();
+            try {
+                msg.put("token", mFirebaseToken);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
             mCredentials = credentials;
             //instantiate and execute the AsyncTask.
             //Feel free to add a handler for onPreExecution so that a progress bar

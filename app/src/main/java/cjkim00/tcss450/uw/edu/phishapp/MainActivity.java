@@ -6,19 +6,32 @@ import android.support.v4.app.Fragment;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 
 import cjkim00.tcss450.uw.edu.phishapp.model.Credentials;
 
 public class MainActivity extends AppCompatActivity implements WaitFragment.OnFragmentInteractionListener, LoginFragment.OnFragmentInteractionListener, RegisterFragment.OnfragmentInteractionListener {
-
+    private boolean mLoadFromChatNotification = false;
+    private static final String TAG = MainActivity.class.getSimpleName();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.add(R.id.frame_main_container, new LoginFragment());
-        transaction.commit();
+        if (getIntent().getExtras() != null) {
+            if (getIntent().getExtras().containsKey("type")) {
+                Log.d(TAG, "type of message: " + getIntent().getExtras().getString("type"));
+                mLoadFromChatNotification = getIntent().getExtras().getString("type").equals("msg");
+            } else {
+                Log.d(TAG, "NO MESSAGE");
+            }
+        }
+        if (savedInstanceState == null) {
+            if (findViewById(R.id.frame_main_container) != null) {
+                getSupportFragmentManager().beginTransaction()
+                        .add(R.id.frame_main_container, new LoginFragment())
+                        .commit();
+            }
+        }
     }
 
     @Override
@@ -56,6 +69,7 @@ public class MainActivity extends AppCompatActivity implements WaitFragment.OnFr
         //intent.putExtras(args);
         intent.putExtra("Username", credentials.getEmail());
         intent.putExtra("Password", credentials.getPassword());
+        intent.putExtra(getString(R.string.keys_intent_notifification_msg), mLoadFromChatNotification);
         startActivity(intent);
         finish();
     }

@@ -20,7 +20,7 @@
             android:name=".HomeActivity"
             android:label="@string/title_activity_home"
             android:theme="@style/AppTheme.NoActionBar"></activity>
-        <service android:name="utils.MyFirebaseMessagingService">
+        <service android:name="cjkim00.tcss450.uw.edu.phishapp.utils.MyFirebaseMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
